@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+// Component Imports
+import Map from "./Map";
+
 const Login = props => {
     // Props destructuring -----------------
-    const { backendURL } = props;
+
+    const { backendURL, loggedIn, isLoggedIn } = props;
 
     // State hooks -----------------
+
     const [token, setToken] = useState("");
     const [error, setError] = useState({});
     const [roomInfo, setRoomInfo] = useState({});
 
     // Handler functions -----------------
+
     const handleSubmit = e => {
         e.preventDefault();
         axios
@@ -22,19 +28,19 @@ const Login = props => {
             })
             .then(res => {
                 setError({});
+                isLoggedIn(true);
                 setRoomInfo(res.data);
-                console.log(res.data);
+                localStorage.setItem("token", token);
+                console.log(res);
             })
             .catch(err => {
                 setError({
                     Error: err.response.data.detail,
                     status: err.response.status
                 });
+                isLoggedIn(false);
                 setRoomInfo({});
-                console.log(err);
             });
-
-        localStorage.setItem("token", token);
     };
 
     const handleChange = e => {
@@ -48,14 +54,22 @@ const Login = props => {
     // Return -----------------
     return (
         <div className="Login">
-            <form onSubmit={handleSubmit}>
-                <label>Enter your API key:</label>
-                <input type="password" value={token} onChange={handleChange} />
-                <button type="submit">Submit</button>
-                <button type="reset" onClick={reset}>
-                    Clear
-                </button>
-            </form>
+            {!loggedIn ? (
+                <form onSubmit={handleSubmit}>
+                    <label>Enter your API key:</label>
+                    <input
+                        type="password"
+                        value={token}
+                        onChange={handleChange}
+                    />
+                    <button type="submit">Submit</button>
+                    <button type="reset" onClick={reset}>
+                        Clear
+                    </button>
+                </form>
+            ) : (
+                <Map />
+            )}
         </div>
     );
 };

@@ -1,0 +1,22 @@
+@import "variables.scss";
+
+.controller-container {
+    display: flex;
+    background: $accentColor;
+    width: 100%;
+    justify-content: center;
+}
+
+.controller-button {
+    background: $accentColor;
+    border: 1px dashed $firstColor;
+    height: 3em;
+    width: 25%;
+    font-family: "Open Sans", sans-serif;
+    text-align: center;
+    user-select: none;
+
+    :hover {
+        cursor: pointer;
+    }
+}
