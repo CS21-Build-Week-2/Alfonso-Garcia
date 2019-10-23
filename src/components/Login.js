@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import fs from "fs";
 
 // Component Imports
 import Map from "./Map";
+
+// Style Imports
+import "../styles/Login.scss";
 
 const Login = props => {
     // Props destructuring -----------------
@@ -31,7 +35,7 @@ const Login = props => {
                 isLoggedIn(true);
                 setRoomInfo(res.data);
                 localStorage.setItem("token", token);
-                console.log(res);
+                console.log(res.data);
             })
             .catch(err => {
                 setError({
@@ -68,7 +72,7 @@ const Login = props => {
                     </button>
                 </form>
             ) : (
-                <Map />
+                <Map roomInfo={roomInfo} />
             )}
         </div>
     );
